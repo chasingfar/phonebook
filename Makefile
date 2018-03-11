@@ -17,11 +17,13 @@ SRCS_common = main.c
 
 phonebook_orig: $(SRCS_common) phonebook_orig.c phonebook_orig.h
 	$(CC) $(CFLAGS_common) $(CFLAGS_orig) \
+	    -DOUT_FILE="\"orig.txt\""\
 		-DIMPL="\"$@.h\"" -o $@ \
 		$(SRCS_common) $@.c
 
 phonebook_opt: $(SRCS_common) phonebook_opt.c phonebook_opt.h
 	$(CC) $(CFLAGS_common) $(CFLAGS_opt) \
+	    -DOUT_FILE="\"opt.txt\""\
 		-DIMPL="\"$@.h\"" -o $@ \
 		$(SRCS_common) $@.c
 

@@ -6,12 +6,6 @@
 
 #include IMPL
 
-#ifdef OPT
-#define OUT_FILE "opt.txt"
-#else
-#define OUT_FILE "orig.txt"
-#endif
-
 #define DICT_FILE "./dictionary/words.txt"
 
 static double diff_in_second(struct timespec t1, struct timespec t2)
