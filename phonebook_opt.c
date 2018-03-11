@@ -7,9 +7,10 @@
 /* TODO: FILL YOUR OWN IMPLEMENTATION HERE! */
 record *findName(char lastName[], entry *pHead)
 {
+    HASH_TYPE lastNameHash=hash(lastName);
     while (pHead != NULL) {
         for(int i=0;i<INDEX_SIZE;i++){
-            if (strcasecmp(lastName, pHead->lastName[i]) == 0)
+            if (lastNameHash==pHead->lastNameHash[i])
                 return pHead->pRecord[i];
         }
         pHead = pHead->pNext;
@@ -27,7 +28,7 @@ entry *append(char lastName[], entry *e)
     }
     e->pRecord[e->length]=(record *) malloc(sizeof(record));
     strcpy(e->pRecord[e->length]->lastName, lastName);
-    strcpy(e->lastName[e->length], lastName);
+    e->lastNameHash[e->length]=hash(lastName);
     e->length++;
 
     return e;

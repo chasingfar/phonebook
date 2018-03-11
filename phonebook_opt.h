@@ -11,6 +11,8 @@
 #define INDEX_SIZE 1024
 #endif
 
+#include "hash.h"
+
 typedef struct __PHONE_BOOK_RECORD {
     char lastName[MAX_LAST_NAME_SIZE];
 
@@ -27,7 +29,7 @@ typedef struct __PHONE_BOOK_RECORD {
 } record;
 typedef struct __PHONE_BOOK_ENTRY {
     int length;
-    char lastName[INDEX_SIZE][MAX_LAST_NAME_SIZE];
+    HASH_TYPE lastNameHash[INDEX_SIZE];
     record *pRecord[INDEX_SIZE];
     struct __PHONE_BOOK_ENTRY *pNext;
 } entry;
