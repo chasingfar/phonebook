@@ -3,6 +3,9 @@
 #include <string.h>
 
 #include "phonebook_opt.h"
+#include "pre_alloc.h"
+#define NODE_CHANNEL 0
+#define RECORD_CHANNEL 1
 
 /* TODO: FILL YOUR OWN IMPLEMENTATION HERE! */
 record *findName(char lastName[], entry *pHead)
@@ -36,9 +39,9 @@ entry *append(char lastName[], entry *e)
         }
     }
 
-    *n = (node *) malloc(sizeof(node));
+    *n = (node *) pre_alloc(sizeof(node),NODE_CHANNEL);
     (*n)->lastNameHash = lastNameHash;
-    (*n)->pRecord = (record *) malloc(sizeof(record));
+    (*n)->pRecord = (record *) pre_alloc(sizeof(record),RECORD_CHANNEL);
     strcpy((*n)->pRecord->lastName, lastName);
     insert_check(*n);
 
@@ -49,6 +52,8 @@ entry *init()
 {
     entry *e = (entry *) malloc(sizeof(entry));
     e->tree = NULL;
+    pre_alloc_init(NODE_CHANNEL);
+    pre_alloc_init(RECORD_CHANNEL);
     return e;
 }
 
