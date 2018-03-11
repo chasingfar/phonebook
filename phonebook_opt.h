@@ -27,13 +27,20 @@ typedef struct __PHONE_BOOK_RECORD {
     char zip[5];
 
 } record;
-typedef struct __PHONE_BOOK_ENTRY {
-    int length;
-    HASH_TYPE lastNameHash[INDEX_SIZE];
-    record *pRecord[INDEX_SIZE];
-    struct __PHONE_BOOK_ENTRY *pNext;
-} entry;
 
+enum __RED_BLACK_TREE_COLOR {RED,BLACK};
+typedef struct __RED_BLACK_TREE_NODE {
+    struct __RED_BLACK_TREE_NODE *parent;
+    struct __RED_BLACK_TREE_NODE *left;
+    struct __RED_BLACK_TREE_NODE *right;
+    enum __RED_BLACK_TREE_COLOR color;
+    HASH_TYPE lastNameHash;
+    record* pRecord;
+} node;
+typedef struct __PHONE_BOOK_ENTRY {
+    node* tree;
+} entry;
+void insert_check(node *n);
 record *findName(char lastName[], entry *pHead);
 entry *append(char lastName[], entry *e);
 

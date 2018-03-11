@@ -6,7 +6,7 @@
 
 #include IMPL
 
-#define DICT_FILE "./dictionary/words.txt"
+#define DICT_FILE "./dictionary/all-names.txt"
 
 static double diff_in_second(struct timespec t1, struct timespec t2)
 {
@@ -71,14 +71,28 @@ int main(int argc, char *argv[])
            "Did you implement findName() in " IMPL "?");
     assert(0 == strcmp(findName(line, e)->lastName, line));
 
+    fp = fopen(DICT_FILE, "r");
+    if (fp == NULL) {
+        printf("cannot open the file\n");
+        return -1;
+    }
+
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(entry));
 #endif
     /* compute the execution time */
     clock_gettime(CLOCK_REALTIME, &start);
-    findName(line, e);
+    while (fgets(line, sizeof(line), fp)) {
+        while (line[i] != '\0')
+            i++;
+        line[i - 1] = '\0';
+        i = 0;
+        findName(line, e);
+    }
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time2 = diff_in_second(start, end);
+
+    fclose(fp);
 
     FILE *output = fopen(OUT_FILE, "a");
     fprintf(output, "append() findName() %lf %lf\n", cpu_time1, cpu_time2);

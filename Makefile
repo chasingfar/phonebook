@@ -3,7 +3,7 @@ CFLAGS_common ?= -Wall -std=gnu99
 CFLAGS_orig = -O0
 CFLAGS_opt  = -O0
 
-EXEC = phonebook_orig phonebook_opt_256 phonebook_opt_512 phonebook_opt_1024 phonebook_opt_2048 phonebook_opt_4096
+EXEC = phonebook_orig phonebook_opt
 
 GIT_HOOKS := .git/hooks/applied
 .PHONY: all
@@ -21,37 +21,8 @@ phonebook_orig: $(SRCS_common) phonebook_orig.c phonebook_orig.h
 		-DIMPL="\"$@.h\"" -o $@ \
 		$(SRCS_common) $@.c
 
-phonebook_opt_256: $(SRCS_common) phonebook_opt.c phonebook_opt.h
+phonebook_opt: $(SRCS_common) phonebook_opt.c phonebook_opt.h
 	$(CC) $(CFLAGS_common) $(CFLAGS_opt) \
-	    -DINDEX_SIZE="256"\
-        -DOUT_FILE="\"$@.txt\""\
-		-DIMPL="\"phonebook_opt.h\"" -o $@ \
-		$(SRCS_common) phonebook_opt.c
-
-phonebook_opt_512: $(SRCS_common) phonebook_opt.c phonebook_opt.h
-	$(CC) $(CFLAGS_common) $(CFLAGS_opt) \
-	    -DINDEX_SIZE="512"\
-        -DOUT_FILE="\"$@.txt\""\
-		-DIMPL="\"phonebook_opt.h\"" -o $@ \
-		$(SRCS_common) phonebook_opt.c
-
-phonebook_opt_1024: $(SRCS_common) phonebook_opt.c phonebook_opt.h
-	$(CC) $(CFLAGS_common) $(CFLAGS_opt) \
-	    -DINDEX_SIZE="1024"\
-        -DOUT_FILE="\"$@.txt\""\
-		-DIMPL="\"phonebook_opt.h\"" -o $@ \
-		$(SRCS_common) phonebook_opt.c
-
-phonebook_opt_2048: $(SRCS_common) phonebook_opt.c phonebook_opt.h
-	$(CC) $(CFLAGS_common) $(CFLAGS_opt) \
-	    -DINDEX_SIZE="2048"\
-        -DOUT_FILE="\"$@.txt\""\
-		-DIMPL="\"phonebook_opt.h\"" -o $@ \
-		$(SRCS_common) phonebook_opt.c
-
-phonebook_opt_4096: $(SRCS_common) phonebook_opt.c phonebook_opt.h
-	$(CC) $(CFLAGS_common) $(CFLAGS_opt) \
-	    -DINDEX_SIZE="4096"\
         -DOUT_FILE="\"$@.txt\""\
 		-DIMPL="\"phonebook_opt.h\"" -o $@ \
 		$(SRCS_common) phonebook_opt.c
@@ -66,19 +37,7 @@ cache-test: $(EXEC)
 		./phonebook_orig
 	perf stat --repeat 100 \
 		-e cache-misses,cache-references,instructions,cycles \
-		./phonebook_opt_256
-	perf stat --repeat 100 \
-		-e cache-misses,cache-references,instructions,cycles \
-		./phonebook_opt_512
-	perf stat --repeat 100 \
-		-e cache-misses,cache-references,instructions,cycles \
-		./phonebook_opt_1024
-	perf stat --repeat 100 \
-		-e cache-misses,cache-references,instructions,cycles \
-		./phonebook_opt_2048
-	perf stat --repeat 100 \
-		-e cache-misses,cache-references,instructions,cycles \
-		./phonebook_opt_4096
+		./phonebook_opt
 
 output.txt: cache-test calculate
 	./calculate $(EXEC)
