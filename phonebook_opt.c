@@ -14,3 +14,14 @@ entry *append(char lastName[], entry *e)
     /* TODO: implement */
     return NULL;
 }
+
+entry *init()
+{
+    /* TODO: implement */
+    return NULL;
+}
+
+void clean(entry *pHead)
+{
+    /* TODO: implement */
+}
